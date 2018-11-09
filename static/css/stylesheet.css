@@ -1,8 +1,29 @@
+
 #map {
-  bottom:0px;
-  height: 100%;
+  top: 0px;
   left: 0;
+  height: 100%;
   position: absolute;
   right: 0px;
-  z-index: -1;
+}
+.icon-bar {
+  display: block;
+  width: 32px;
+  height: 4px;
+  border-radius: 1px;
+  margin-top: 4px;
+  background-color: #eee;
+}
+#btn-collapse {
+	margin: 10px;
+	padding: 10px;
+	position: relative;
+	z-index: 1;
+}
+#nav {
+	background-color: #fff;
+	padding: 15px;
+	max-width: 400px;
+	position: relative;
+	z-index: 1;
 }

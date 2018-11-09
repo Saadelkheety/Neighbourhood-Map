@@ -4,17 +4,31 @@
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <title>Neighbourhood Map</title>
     <meta content="width=device-width, initial-scale=1" name="viewport">
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <link href="{{ url_for('static', filename='css/stylesheet.css') }}" rel="stylesheet" type="text/css">
 </head>
 <body>
+    <section class="navbar-section">
+    <button type="button" id="btn-collapse" class="btn btn-secondary" data-toggle="collapse" data-target="#nav">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+    <div id="nav" class="collapse">
     <div class="form-group">
       <input placeholder="Search…" type="search" class="form-control"  name="search" data-bind="value: query, valueUpdate: 'afterkeydown', event: {keyup: filter}" autocomplete="off">
     </div>
     <ul class="list-group" data-bind="foreach: locations">
         <li class="list-group-item" data-bind="visible: visible, text:title"></li>
     </ul>
-    <div id="map" ></div>
+    </div>
+</section>
+    <div class="main-content">
+        <div id="map"></div>
+    </div>
 <!--========================== js libraries ==============================-->
     <script src="{{ url_for('static', filename='js/lib/knockout-3.4.2.js')}}"></script>
     <script src="{{ url_for('static', filename='js/app.js')}}"></script>
