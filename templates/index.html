@@ -12,17 +12,17 @@
 </head>
 <body>
     <section class="navbar-section">
-    <button type="button" id="btn-collapse" class="btn btn-secondary" data-toggle="collapse" data-target="#nav">
+    <button type="button" id="btn-collapse" class="btn btn-secondary" onmouseenter="collapse()" data-toggle="collapse" data-target="#nav">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </button>
-    <div id="nav" class="collapse">
+    <div id="nav" class="collapse" onmouseleave="collapse()">
     <div class="form-group">
       <input placeholder="Search…" type="search" class="form-control"  name="search" data-bind="value: query, valueUpdate: 'afterkeydown', event: {keyup: filter}" autocomplete="off">
     </div>
-    <ul class="list-group" data-bind="foreach: locations">
-        <li class="list-group-item" data-bind="visible: visible, text:title"></li>
+    <ul class="list-group" data-bind="foreach: markers">
+        <li class="list-group-item" data-bind="visible:show"> <a href="#" data-bind="visible:show, event:{click:$parent.selecItem}, text:title"></a> </li>
     </ul>
     </div>
 </section>
@@ -33,7 +33,13 @@
     <script src="{{ url_for('static', filename='js/lib/knockout-3.4.2.js')}}"></script>
     <script src="{{ url_for('static', filename='js/app.js')}}"></script>
     <script src="{{ url_for('static', filename='js/lib/bootstrap.min.js')}}"></script>
-    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDHspQCoi3pEAzjICyNadaXDc2TkZcG-8Y&libraries=geometry&v=3&callback=initMap">
+    <script type="text/javascript">
+        function collapse(){
+            $('#btn-collapse').click();
+        }
+    </script>
+
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8oKS2QngD-5FlY_uc9gIz-Lb0wggu_6Y&libraries=geometry&v=3&callback=initMap">
     </script>
 </body>
 </html>
