@@ -220,7 +220,7 @@ function AppViewModel(map) {
             request.ontimeout = function(e) {
                 console.error("Timeout!!")
             }
-            
+
             // Callback function for when request completes
             request.onload = () => {
                 // Extract JSON data from request
@@ -249,7 +249,7 @@ function AppViewModel(map) {
                     infowindow.setContent(
                         `<div id="infowindow">
                         <h5> ${marker.title}</h5>
-                        <img src="https://maps.googleapis.com/maps/api/streetview?size=200x100&location=${marker.position["lat"]()},${marker.position["lng"]()}&fov=90&heading=235&pitch=10&key=AIzaSyDHspQCoi3pEAzjICyNadaXDc2TkZcG-8Y&radius=200" alt="">
+                        <img src="https://maps.googleapis.com/maps/api/streetview?size=200x100&location=${marker.position["lat"]()},${marker.position["lng"]()}&fov=90&heading=235&pitch=10&key=AIzaSyC8oKS2QngD-5FlY_uc9gIz-Lb0wggu_6Y&radius=200" alt="">
                         <h6>nearby Places</h6>
                         <div id="foursquare" data-bind="foreach: places">
                         ${content}
