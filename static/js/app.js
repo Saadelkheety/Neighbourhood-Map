@@ -86,15 +86,16 @@ function AppViewModel(map) {
       });
 
 
-      marker.addListener('mouseout', function() {
+      /*marker.addListener('mouseout', function() {
           this.setAnimation(google.maps.Animation.Null);
-      });
+      });*/
       marker.addListener('click', toggleBounce);
       function toggleBounce() {
             if (marker.getAnimation() !== null) {
               marker.setAnimation(null);
             } else {
               marker.setAnimation(google.maps.Animation.BOUNCE);
+              setTimeout(function(){marker.setAnimation(null);},500)
             }
         }
         // Create an onclick event to open an infowindow at each marker.
@@ -105,9 +106,11 @@ function AppViewModel(map) {
       markers.push(marker);
 
   }
-    //the marker which is selected open its pop up window
+    //when an item is selected from a list
     this.selecItem = function(marker) {
      populateInfoWindow(marker, largeInfowindow);
+     marker.setAnimation(google.maps.Animation.BOUNCE);
+     setTimeout(function(){marker.setAnimation(null);},500)
       };
 
     //this.markers = ko.observableArray(markers);
@@ -136,12 +139,58 @@ function AppViewModel(map) {
           if (infowindow.marker != marker) {
             // Clear the infowindow content to give the streetview time to load.
             infowindow.setContent('');
+            infowindow.setOptions({maxWidth:250});
+            infowindow.setOptions({disableAutoPan: false});
+
             infowindow.marker = marker;
             // Make sure the marker property is cleared if the infowindow is closed.
             infowindow.addListener('closeclick', function() {
               infowindow.marker = null;
             });
-            infowindow.setContent('<div>' + marker.title + '</div><div id="foursquare"></div>');
+            // add foursquare api for nearby places.
+            const request = new XMLHttpRequest();
+            let apiUrl = ` https://api.foursquare.com/v2/venues/explore?client_id=URUBLCSWPB2WHXHOWJYZIZ3P0MKR3FUUYHX3V4PYPDZ2TSZH&client_secret=1JOHIYIIW1DYQSCIF35FTBOFVNTL1TO3AZZLBTOPZ1C5UBQY&v=20180323&limit=5&ll=${marker.position["lat"]()},${marker.position["lng"]()}&time=any&day=any&openNow=0&sortByDistance=1&radius=200`
+            request.open('GET', apiUrl);
+            request.send();
+            // Callback function for when request completes
+            request.onload = () => {
+                // Extract JSON data from request
+                const data = JSON.parse(request.response);
+                if(data.meta.code == 200){
+                    let nearbyPlaces = data.response.groups[0].items;
+                    console.log("nearbyPlaces = ",nearbyPlaces);
+                    let places = [];
+                    for(let i = 0; i < nearbyPlaces.length; i++) {
+                        let place = {
+                                category: nearbyPlaces[i].venue.categories[0].name,
+                                name: nearbyPlaces[i].venue.name,
+                                distance: nearbyPlaces[i].venue.location.distance
+                        };
+                        places.push(place);
+                    }// end for
+                    let content ='';
+                    for (let i = 0; i < places.length; i++) {
+                        content += `
+                            <h6>${places[i].name}</h6>
+                            <ul>
+                                <li>Category: ${places[i].category}</li>
+                                <li>Distance: ${places[i].distance} Meters</li>
+                            </ul>
+                        `
+                    }// end for
+                    infowindow.setContent(
+                        `<div id="infowindow">
+                        <h5> ${marker.title} (nearby Places)</h5>
+                        <div id="foursquare" data-bind="foreach: places">
+                        ${content}
+                     </div>
+                     </div>`);
+                } // end if
+                else {
+                    infowindow.setContent(`<h3> ${marker.title}'</h3><div id="foursquare"> the foursqure api connections has a proplem </div>`);
+                }
+            }
+
             infowindow.open(map, marker);
           }
         }

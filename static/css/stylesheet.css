@@ -26,4 +26,11 @@
 	max-width: 400px;
 	position: relative;
 	z-index: 1;
+    transition: all .2s ease-in-out;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+}
+#infowindow{
+    max-width: 200px;
+    max-height: 300px;
 }
